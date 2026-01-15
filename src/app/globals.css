@@ -1,0 +1,603 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   CSS VARIABLES - WARM NEUTRAL PALETTE
+   ============================================ */
+:root {
+  --gradient-primary: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #f97316 100%);
+  --gradient-accent: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+  --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #f97316 50%, #ef4444 100%);
+  --gradient-rainbow: linear-gradient(90deg, #f97316, #f59e0b, #10b981, #3b82f6, #a855f7);
+  
+  /* Warm neutral base colors */
+  --bg-primary: #1a1814;
+  --bg-secondary: #252119;
+  --bg-tertiary: #2d2820;
+  --bg-card: #2a2520;
+  --bg-elevated: #353028;
+  
+  --text-primary: #f5f0e8;
+  --text-secondary: #c4baa8;
+  --text-muted: #8a8070;
+  
+  --border-subtle: rgba(245, 240, 232, 0.08);
+  --border-default: rgba(245, 240, 232, 0.12);
+  --border-strong: rgba(245, 240, 232, 0.2);
+}
+
+/* ============================================
+   BASE STYLES - WARM DARK THEME
+   ============================================ */
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  font-feature-settings: 'ss01' on, 'cv01' on;
+}
+
+/* Page background with warm gradient */
+.page-bg {
+  background: 
+    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+  position: relative;
+}
+
+.page-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(249, 115, 22, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 0%, rgba(168, 85, 247, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 50% 100%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(245, 240, 232, 0.15);
+  border-radius: 3px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 240, 232, 0.25);
+}
+
+/* ============================================
+   TEXT GRADIENTS
+   ============================================ */
+.text-gradient-primary {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-gold {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-rainbow {
+  background: var(--gradient-rainbow);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ============================================
+   MODERN CARDS - WARM GLASS EFFECT
+   ============================================ */
+.card {
+  background: linear-gradient(135deg, rgba(42, 37, 32, 0.9) 0%, rgba(35, 30, 25, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  border-radius: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  border-color: var(--border-default);
+  box-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.card-highlight {
+  background: linear-gradient(135deg, rgba(50, 42, 32, 0.95) 0%, rgba(40, 35, 28, 0.98) 100%);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  box-shadow: 
+    0 4px 24px rgba(249, 115, 22, 0.1),
+    inset 0 1px 0 rgba(249, 115, 22, 0.1);
+}
+
+/* Prize pool special card with animated border */
+.card-prize {
+  background: linear-gradient(135deg, rgba(45, 38, 30, 0.98) 0%, rgba(35, 30, 24, 0.98) 100%);
+  border-radius: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-prize::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: linear-gradient(135deg, #f97316, #f59e0b, #f97316);
+  border-radius: inherit;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+@keyframes border-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ============================================
+   PRIZE POOL DISPLAY
+   ============================================ */
+.prize-amount {
+  font-weight: 800;
+  font-size: clamp(3rem, 10vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.prize-digit {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.prize-digit.updating {
+  animation: slot-digit 0.15s ease-out;
+}
+
+@keyframes slot-digit {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { transform: translateY(10%); }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.prize-glow {
+  position: absolute;
+  inset: -30px;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
+  filter: blur(30px);
+  animation: glow-pulse 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* Prize increase celebration */
+@keyframes prize-increase {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.08); }
+  50% { transform: scale(0.98); }
+  75% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.prize-increasing {
+  animation: prize-increase 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3
+         font-semibold rounded-2xl
+         transition-all duration-300 ease-out
+         active:scale-95
+         disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: 
+    0 4px 20px rgba(249, 115, 22, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 
+    0 8px 30px rgba(249, 115, 22, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3
+         font-semibold rounded-2xl
+         transition-all duration-300 ease-out
+         active:scale-95;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-strong);
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2
+         bg-transparent
+         font-medium rounded-xl
+         transition-all duration-200;
+  color: var(--text-secondary);
+}
+
+.btn-ghost:hover {
+  background: rgba(245, 240, 232, 0.05);
+  color: var(--text-primary);
+}
+
+/* ============================================
+   MESSAGE BUBBLES
+   ============================================ */
+.message-user {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: white;
+  border-radius: 1.5rem 1.5rem 0.5rem 1.5rem;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.25);
+}
+
+.message-assistant {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  border-radius: 1.5rem 1.5rem 1.5rem 0.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   INPUT STYLES
+   ============================================ */
+.input-primary {
+  @apply rounded-2xl px-5 py-4
+         transition-all duration-300
+         focus:outline-none
+         disabled:opacity-50 disabled:cursor-not-allowed;
+  background: var(--bg-card);
+  border: 2px solid var(--border-default);
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.input-primary::placeholder {
+  color: var(--text-muted);
+}
+
+.input-primary:focus {
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+}
+
+/* ============================================
+   HEADER BLUR
+   ============================================ */
+.header-blur {
+  background: rgba(26, 24, 20, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+/* Staggered entrance */
+.stagger-children > * {
+  opacity: 0;
+  animation: slide-up 0.6s ease-out forwards;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.35s; }
+
+@keyframes slide-up {
+  0% { transform: translateY(30px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out forwards;
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+@keyframes scale-in {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.3s ease-out forwards;
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Floating orbs */
+@keyframes float-orb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(10px, -15px) scale(1.05); }
+  50% { transform: translate(-5px, -25px) scale(1); }
+  75% { transform: translate(-15px, -10px) scale(0.95); }
+}
+
+.orb {
+  animation: float-orb 20s ease-in-out infinite;
+}
+
+.orb-1 { animation-delay: 0s; }
+.orb-2 { animation-delay: -5s; }
+.orb-3 { animation-delay: -10s; }
+
+/* Shimmer effect */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(245, 240, 232, 0.03) 25%,
+    rgba(245, 240, 232, 0.08) 50%,
+    rgba(245, 240, 232, 0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Sparkle effect */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+
+.sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+/* Confetti burst */
+@keyframes confetti-burst {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(-200px) rotate(720deg) scale(0); opacity: 0; }
+}
+
+.confetti-piece {
+  animation: confetti-burst 1.5s ease-out forwards;
+}
+
+/* ============================================
+   CLAUDE CHARACTER ANIMATIONS
+   ============================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float { animation: float 3s ease-in-out infinite; }
+
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.02); }
+}
+
+.animate-bounce-gentle { animation: bounce-gentle 0.7s ease-in-out infinite; }
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-4deg); }
+  75% { transform: rotate(4deg); }
+}
+
+.animate-wiggle { animation: wiggle 0.5s ease-in-out infinite; }
+
+@keyframes shake-no {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  20% { transform: translateX(-5px) rotate(-2deg); }
+  40% { transform: translateX(5px) rotate(2deg); }
+  60% { transform: translateX(-5px) rotate(-2deg); }
+  80% { transform: translateX(5px) rotate(2deg); }
+}
+
+.animate-shake-no { animation: shake-no 0.6s ease-in-out; }
+
+@keyframes tilt {
+  0%, 100% { transform: rotate(0deg) translateX(0); }
+  50% { transform: rotate(10deg) translateX(3px); }
+}
+
+.animate-tilt { animation: tilt 2.5s ease-in-out infinite; }
+
+@keyframes nod {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(5px) rotate(-2deg); }
+  50% { transform: translateY(0) rotate(0deg); }
+  75% { transform: translateY(5px) rotate(2deg); }
+}
+
+.animate-nod { animation: nod 1.2s ease-in-out infinite; }
+
+@keyframes dance {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  25% { transform: translateY(-8px) rotate(-6deg) scale(1.02); }
+  50% { transform: translateY(0) rotate(0deg) scale(1); }
+  75% { transform: translateY(-8px) rotate(6deg) scale(1.02); }
+}
+
+.animate-dance { animation: dance 0.8s ease-in-out infinite; }
+
+@keyframes celebrate {
+  0%, 100% { transform: scale(1) rotate(0deg) translateY(0); }
+  25% { transform: scale(1.15) rotate(-8deg) translateY(-5px); }
+  50% { transform: scale(1) rotate(0deg) translateY(0); }
+  75% { transform: scale(1.15) rotate(8deg) translateY(-5px); }
+}
+
+.animate-celebrate { animation: celebrate 0.6s ease-in-out infinite; }
+
+@keyframes pulse-slow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.animate-pulse-slow { animation: pulse-slow 2.5s ease-in-out infinite; }
+
+@keyframes jump {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-20px) scale(1.1); }
+  50% { transform: translateY(-15px) scale(1.05); }
+}
+
+.animate-jump { animation: jump 0.5s ease-out; }
+
+/* Face animations */
+@keyframes pupil-look {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(1px, -1px); }
+  50% { transform: translate(-1px, 0); }
+  75% { transform: translate(1px, 1px); }
+}
+
+.animate-pupil-look { animation: pupil-look 4s ease-in-out infinite; }
+
+/* Glow breathe animation for Claude character */
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.4; transform: scale(1.3); }
+  50% { opacity: 0.6; transform: scale(1.5); }
+}
+
+.animate-glow-breathe { animation: glow-breathe 4s ease-in-out infinite; }
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 0.12; }
+  50% { opacity: 0.2; }
+}
+
+.animate-pulse-subtle { animation: pulse-subtle 3s ease-in-out infinite; }
+
+@keyframes particle-orbit {
+  0% { opacity: 0.3; transform: rotate(0deg) translateX(5px) scale(0.8); }
+  50% { opacity: 0.8; transform: rotate(180deg) translateX(-5px) scale(1.2); }
+  100% { opacity: 0.3; transform: rotate(360deg) translateX(5px) scale(0.8); }
+}
+
+.animate-particle-orbit { animation: particle-orbit 3s ease-in-out infinite; }
+
+@keyframes thinking-dot-1 {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+@keyframes thinking-dot-2 {
+  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+@keyframes thinking-dot-3 {
+  0%, 100% { opacity: 0.5; transform: scale(0.9); }
+  50% { opacity: 0.9; transform: scale(1.2); }
+}
+
+.animate-thinking-dot-1 { animation: thinking-dot-1 1.5s ease-in-out infinite; }
+.animate-thinking-dot-2 { animation: thinking-dot-2 1.5s ease-in-out infinite 0.2s; }
+.animate-thinking-dot-3 { animation: thinking-dot-3 1.5s ease-in-out infinite 0.4s; }
+
+@keyframes blush-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.animate-blush-fade { animation: blush-fade 0.5s ease-out forwards; }
+
+/* Particles */
+@keyframes particle-float {
+  0% { opacity: 0; transform: translateY(0) scale(0); }
+  20% { opacity: 1; transform: translateY(-15px) scale(1); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.5); }
+}
+
+.animate-particle { animation: particle-float 2.5s ease-out infinite; }
+
+@keyframes sparkle-float {
+  0%, 100% { opacity: 0; transform: translateY(0) rotate(0deg) scale(0); }
+  10% { opacity: 1; transform: translateY(-10px) rotate(45deg) scale(1); }
+  50% { opacity: 0.8; transform: translateY(-30px) rotate(180deg) scale(0.8); }
+  90% { opacity: 0.3; transform: translateY(-50px) rotate(315deg) scale(0.5); }
+}
+
+.animate-sparkle-float { animation: sparkle-float 3s ease-out infinite; }
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Number ticker */
+.number-ticker {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' on;
+}

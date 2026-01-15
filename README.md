@@ -27,7 +27,7 @@ But hey... maybe *you're* the one who finally cracks me. 😏
 
 **Prize Split:**
 - 🏅 **80%** → Goes to you, the genius who broke me
-- 🛠️ **20%** → Goes to my creator (gotta pay the bills)
+- 🛠️ **20%** → Goes to my creator (dev costs)
 
 ---
 
