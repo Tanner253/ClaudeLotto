@@ -5,8 +5,8 @@ import type { HistoryResponse } from '@/types';
 
 // ============================================
 // HISTORY API - Two modes:
-// 1. Public: Returns sanitized stats only (no conversation content)
-// 2. Admin: Returns full history with conversations (requires auth)
+// 1. Public: Returns attempts with full conversation messages (wallet masked)
+// 2. Admin: Same data with unmasked wallet and full transaction details
 // ============================================
 
 export async function GET(request: NextRequest): Promise<NextResponse<HistoryResponse>> {
@@ -41,19 +41,15 @@ export async function GET(request: NextRequest): Promise<NextResponse<HistoryRes
       });
     }
 
-    // Public users get sanitized data - no conversation content
-    // This prevents leaking jailbreak attempts to other users
+    // Public users get full conversation content so everyone can view attempt history
     const sanitizedAttempts = attempts.map((attempt) => ({
       _id: attempt._id,
-      // Mask wallet address for privacy (show first 4 and last 4 chars)
       walletAddress: maskWalletAddress(attempt.walletAddress),
-      // Don't expose actual messages - just show count of USER messages only
-      messages: [],
+      messages: attempt.messages,
       messageCount: attempt.messages.filter(m => m.role === 'user').length,
-      transactionSignatures: [], // Don't expose signatures
+      transactionSignatures: [],
       timestamp: attempt.timestamp,
       result: attempt.result,
-      // Don't expose prize transaction details publicly
       prizeTransaction: attempt.prizeTransaction ? '[REDACTED]' : undefined,
     }));
 

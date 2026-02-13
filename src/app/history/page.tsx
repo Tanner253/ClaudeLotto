@@ -10,6 +10,7 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [potBalance, setPotBalance] = useState<number | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -180,7 +181,11 @@ export default function HistoryPage() {
                   className="animate-slide-up"
                   style={{ animationDelay: `${i * 0.05}s` }}
                 >
-                  <AttemptCard attempt={attempt} />
+                  <AttemptCard
+                    attempt={attempt}
+                    isExpanded={expandedId === attempt._id}
+                    onToggle={() => setExpandedId((id) => (id === attempt._id ? null : attempt._id))}
+                  />
                 </div>
               ))}
             </div>
@@ -232,24 +237,36 @@ function WinnerCard({ winner }: { winner: WinRecord }) {
   );
 }
 
-function AttemptCard({ attempt }: { attempt: Attempt }) {
+function AttemptCard({
+  attempt,
+  isExpanded,
+  onToggle,
+}: {
+  attempt: Attempt;
+  isExpanded: boolean;
+  onToggle: () => void;
+}) {
   const date = new Date(attempt.timestamp);
-  // Wallet address may already be masked from API
   const shortWallet = attempt.walletAddress.includes('...')
     ? attempt.walletAddress
     : `${attempt.walletAddress.slice(0, 4)}...${attempt.walletAddress.slice(-4)}`;
   const isWin = attempt.result === 'approved';
+  const messages = attempt.messages ?? [];
+  const hasMessages = messages.length > 0;
 
   return (
     <div
-      className={`card p-5 transition-all duration-300 hover:translate-y-[-2px] ${
+      className={`card overflow-hidden transition-all duration-300 ${
         isWin ? 'card-highlight ring-1 ring-orange-500/20' : ''
       }`}
     >
-      <div className="flex items-center justify-between">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full p-5 text-left flex items-center justify-between hover:bg-white/[0.02] transition-colors rounded-t-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:ring-inset"
+      >
         <div className="flex items-center gap-4">
-          {/* Avatar */}
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+          <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
             isWin
               ? 'bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30'
               : 'bg-[var(--bg-elevated)] border border-white/10'
@@ -262,7 +279,6 @@ function AttemptCard({ attempt }: { attempt: Attempt }) {
               </svg>
             )}
           </div>
-
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="font-mono text-sm font-medium text-[var(--text-secondary)]">{shortWallet}</span>
@@ -277,23 +293,87 @@ function AttemptCard({ attempt }: { attempt: Attempt }) {
             </p>
           </div>
         </div>
-
-        <div className="text-right">
-          <p className="text-sm font-medium text-[var(--text-secondary)]">
-            {date.toLocaleDateString(undefined, {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-            })}
-          </p>
-          <p className="text-xs text-[var(--text-muted)]">
-            {date.toLocaleTimeString(undefined, {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </p>
+        <div className="flex items-center gap-3">
+          <div className="text-right">
+            <p className="text-sm font-medium text-[var(--text-secondary)]">
+              {date.toLocaleDateString(undefined, {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            </p>
+            <p className="text-xs text-[var(--text-muted)]">
+              {date.toLocaleTimeString(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </p>
+          </div>
+          <span
+            className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-[var(--text-muted)] transition-transform duration-200 ${
+              isExpanded ? 'rotate-180' : ''
+            }`}
+            aria-hidden
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
         </div>
-      </div>
+      </button>
+
+      {isExpanded && (
+        <div className="border-t border-white/10 bg-[var(--bg-elevated)]/50">
+          <div className="p-4">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-[var(--text-muted)] mb-3">
+              Conversation
+            </h3>
+            {hasMessages ? (
+              <div className="space-y-4">
+                {messages.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
+                  >
+                    <div
+                      className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
+                        msg.role === 'user'
+                          ? 'bg-blue-500/20 text-blue-400'
+                          : 'bg-orange-500/20 text-orange-400'
+                      }`}
+                      title={msg.role === 'assistant' ? 'Claude' : undefined}
+                    >
+                      {msg.role === 'user' ? (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      ) : (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                      )}
+                    </div>
+                    <div
+                      className={`flex-1 min-w-0 rounded-xl px-4 py-3 ${
+                        msg.role === 'user'
+                          ? 'bg-blue-500/10 border border-blue-500/20 text-[var(--text-primary)]'
+                          : 'bg-[var(--bg-card)] border border-white/10 text-[var(--text-secondary)]'
+                      }`}
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1.5">
+                        {msg.role === 'user' ? 'User' : 'Claude'}
+                      </p>
+                      <div className="text-sm whitespace-pre-wrap break-words">{msg.content}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-[var(--text-muted)]">No messages in this attempt.</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
