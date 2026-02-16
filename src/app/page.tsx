@@ -201,6 +201,28 @@ export default function Home() {
             </p>
           </div>
 
+          {/* User Security */}
+          <div className="card p-6 md:p-8 border border-emerald-500/20 bg-emerald-500/5">
+            <h2 className="text-center text-sm text-[var(--text-muted)] uppercase tracking-widest mb-6 font-bold">
+              User Security
+            </h2>
+            <ul className="space-y-3 text-[var(--text-secondary)] max-w-xl mx-auto text-left list-disc list-inside leading-relaxed">
+              <li>The wallet connection is <span className="font-semibold text-[var(--text-primary)]">read-only</span> for user identification.</li>
+              <li>When you send a message to pay, you can <span className="font-semibold text-[var(--text-primary)]">preview the transaction</span> before signing to verify legitimacy.</li>
+              <li><span className="font-semibold text-[var(--text-primary)]">No token approvals.</span> We only request a one-time SOL transfer for the exact message cost each time — no unlimited or recurring approvals.</li>
+              <li><span className="font-semibold text-[var(--text-primary)]">Your keys never leave your wallet.</span> Signing happens inside Phantom (or your wallet); we never see or store private keys.</li>
+              <li>Payments go only to the <span className="font-semibold text-[var(--text-primary)]">prize pool treasury</span>; the transaction you sign has a single recipient and the exact amount shown.</li>
+              <li>If you are concerned, please do the following:</li>
+            </ul>
+            <ol className="space-y-2 text-[var(--text-secondary)] max-w-xl mx-auto text-left list-decimal list-inside mt-4 mb-4 leading-relaxed">
+              <li>Scan the <span className="font-semibold text-[var(--text-primary)]">fully open-source</span> code on GitHub with a premium model of your choice (free Grok will not read the code): <a href="https://github.com/Tanner253/ClaudeLotto" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 underline font-medium">github.com/Tanner253/ClaudeLotto</a></li>
+              <li><span className="font-semibold text-[var(--text-primary)]">Only connect a fresh, burner wallet.</span></li>
+            </ol>
+            <p className="text-center text-sm text-[var(--text-muted)] max-w-xl mx-auto">
+              Do these two things for <span className="font-semibold text-[var(--text-primary)]">any</span> project you interface with.
+            </p>
+          </div>
+
           {/* Trust indicators */}
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 text-sm">
             <TrustBadge icon="✓" label="Transparent" color="success" />

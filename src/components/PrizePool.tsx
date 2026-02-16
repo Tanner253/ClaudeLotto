@@ -2,6 +2,16 @@
 
 import { useState, useEffect, useRef } from 'react';
 
+const MESSAGE_COST_SOL = parseFloat(process.env.NEXT_PUBLIC_MESSAGE_COST_SOL || '0.1');
+
+function formatMultiplier(balance: number | null): string {
+  if (balance === null || balance <= 0) return '0x';
+  const mult = balance / MESSAGE_COST_SOL;
+  if (mult >= 1) return `${Math.round(mult)}x`;
+  if (mult > 0) return `${mult.toFixed(1)}x`;
+  return '0x';
+}
+
 interface PrizePoolProps {
   balance: number | null;
   loading?: boolean;
@@ -117,9 +127,12 @@ export function PrizePool({
                 {displayValue.toFixed(2)}
               </div>
               
-              {/* Currency label */}
-              <div className="text-xl md:text-2xl font-bold text-[var(--text-muted)] mt-1">
-                SOL
+              {/* Currency + multiplier */}
+              <div className="text-xl md:text-2xl font-bold text-[var(--text-muted)] mt-1 flex flex-col items-center gap-0.5">
+                <span>SOL</span>
+                <span className="text-base md:text-lg font-semibold text-orange-400/90 tabular-nums">
+                  {formatMultiplier(balance)} multiplier
+                </span>
               </div>
             </div>
           )}
@@ -195,6 +208,8 @@ export function PrizePoolCompact({
     }
   }, [balance]);
 
+  const multiplier = formatMultiplier(balance);
+
   return (
     <div className={`
       flex items-center gap-2 px-4 py-2 rounded-full
@@ -206,11 +221,16 @@ export function PrizePoolCompact({
       {loading ? (
         <span className="w-12 h-5 shimmer rounded" />
       ) : (
-        <span className={`font-bold text-gradient-gold number-ticker ${isAnimating ? 'scale-110' : ''} transition-transform`}>
-          {displayValue.toFixed(2)}
-        </span>
+        <>
+          <span className={`font-bold text-gradient-gold number-ticker ${isAnimating ? 'scale-110' : ''} transition-transform`}>
+            {displayValue.toFixed(2)}
+          </span>
+          <span className="text-xs font-semibold text-[var(--text-muted)]">SOL</span>
+          <span className="text-xs font-bold text-orange-400/90 tabular-nums" title="Pot size in entry multiples">
+            {multiplier}
+          </span>
+        </>
       )}
-      <span className="text-xs font-semibold text-[var(--text-muted)]">SOL</span>
     </div>
   );
 }
