@@ -88,7 +88,7 @@ export default function Home() {
               </svg>
             </a>
             <a
-              href="https://x.com/i/communities/2011701376192331907"
+              href="https://x.com/ClaudeLottoSol"
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-lg bg-[var(--bg-card)] border border-white/10 flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-white/20 transition-all"
