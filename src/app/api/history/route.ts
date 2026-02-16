@@ -4,7 +4,10 @@ import { verifyAdminAuth } from '@/lib/auth';
 import type { HistoryResponse } from '@/types';
 
 // ============================================
-// HISTORY API - Two modes:
+// HISTORY API - READ-ONLY, DOES NOT AFFECT CHAT/CLAUDE
+// Used only for the /history page display. Chat uses session.messages and
+// getChatResponse() only; this route is never used in the chat flow.
+// Two modes:
 // 1. Public: Returns attempts with full conversation messages (wallet masked)
 // 2. Admin: Same data with unmasked wallet and full transaction details
 // ============================================

@@ -7,20 +7,12 @@ import { PrizePool } from '@/components/PrizePool';
 import type { ClaudeEmotion } from '@/components/claude-character';
 
 const IDLE_EMOTIONS: ClaudeEmotion[] = ['idle', 'playful', 'happy', 'amused', 'impressed'];
-const CA_ADDRESS = '3fBQe5kaAZqbZYD3BcbXqSZFNxmS3wJTzMxjrn5Xpump';
 
 export default function Home() {
   const [potBalance, setPotBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [emotion, setEmotion] = useState<ClaudeEmotion>('idle');
   const [isHovering, setIsHovering] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const copyCA = async () => {
-    await navigator.clipboard.writeText(CA_ADDRESS);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   useEffect(() => {
     async function fetchBalance() {
@@ -107,25 +99,15 @@ export default function Home() {
               </svg>
             </a>
 
-            {/* CA Address - Copyable */}
-            <button
-              onClick={copyCA}
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--bg-card)] border border-white/10 hover:border-orange-500/30 transition-all group"
-              title="Click to copy CA"
+            {/* CA Address - Coming soon */}
+            <div
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--bg-card)] border border-white/10"
+              title="Contract address"
             >
-              <span className="text-xs text-[var(--text-muted)] font-mono">
-                {CA_ADDRESS.slice(0, 4)}...{CA_ADDRESS.slice(-4)}
+              <span className="text-xs text-[var(--text-muted)] font-medium">
+                Coming soon
               </span>
-              {copied ? (
-                <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              ) : (
-                <svg className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
-              )}
-            </button>
+            </div>
             
             <Link href="/history" className="btn-ghost">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,6 +189,16 @@ export default function Home() {
                 description="Convince Claude, win the entire pot" 
               />
             </div>
+          </div>
+
+          {/* Flywheel */}
+          <div className="card p-6 md:p-8 border border-orange-500/20 bg-orange-500/5">
+            <h2 className="text-center text-sm text-[var(--text-muted)] uppercase tracking-widest mb-4 font-bold">
+              The Flywheel
+            </h2>
+            <p className="text-center text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
+              When someone wins, <span className="font-semibold text-orange-400">15% of the profit from dev winnings</span> is used to buy back and god candle the chart — so wins fuel more demand and support the token.
+            </p>
           </div>
 
           {/* Trust indicators */}

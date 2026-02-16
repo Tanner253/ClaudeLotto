@@ -187,7 +187,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<ChatRespo
     await recordRequest(walletAddress);
 
     // === GET CONVERSATION HISTORY FROM SERVER ===
-    // Conversation history is stored server-side - client cannot manipulate it
+    // Conversation comes from session only (sessions collection). History API
+    // (/api/history) is read-only for display and is not used here.
     const conversationHistory: Message[] = session.messages;
 
     // Get current pot balance for context

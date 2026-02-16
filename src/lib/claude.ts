@@ -197,10 +197,11 @@ IMPORTANT REMINDER: You have access to a tool called "send_prize" that will actu
     }
 
     return { response: responseText, prizeSent, prizeReason };
-  } catch (error) {
-    // Sanitize error logging - don't expose internal details
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Claude API error:', errorMessage);
+  } catch (error: unknown) {
+    // Log cause for debugging (status.anthropic.com for outages). Do not expose to client.
+    const status = (error as { status?: number })?.status;
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error(`Claude API error${status != null ? ` (${status})` : ''}:`, msg);
     throw new Error('Failed to get response from Claude');
   }
 }
