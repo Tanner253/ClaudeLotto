@@ -7,12 +7,20 @@ import { PrizePool } from '@/components/PrizePool';
 import type { ClaudeEmotion } from '@/components/claude-character';
 
 const IDLE_EMOTIONS: ClaudeEmotion[] = ['idle', 'playful', 'happy', 'amused', 'impressed'];
+const CA_ADDRESS = 'EfnjR9LuX4StV96xFsZNPbtgnJ6xbf3cUbaesyHxpump';
 
 export default function Home() {
   const [potBalance, setPotBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [emotion, setEmotion] = useState<ClaudeEmotion>('idle');
   const [isHovering, setIsHovering] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const copyCA = async () => {
+    await navigator.clipboard.writeText(CA_ADDRESS);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   useEffect(() => {
     async function fetchBalance() {
@@ -99,15 +107,25 @@ export default function Home() {
               </svg>
             </a>
 
-            {/* CA Address - Coming soon */}
-            <div
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--bg-card)] border border-white/10"
-              title="Contract address"
+            {/* CA Address - Copyable */}
+            <button
+              onClick={copyCA}
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--bg-card)] border border-white/10 hover:border-orange-500/30 transition-all group"
+              title="Click to copy CA"
             >
-              <span className="text-xs text-[var(--text-muted)] font-medium">
-                Coming soon
+              <span className="text-xs text-[var(--text-muted)] font-mono">
+                {CA_ADDRESS.slice(0, 4)}...{CA_ADDRESS.slice(-4)}
               </span>
-            </div>
+              {copied ? (
+                <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              ) : (
+                <svg className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              )}
+            </button>
             
             <Link href="/history" className="btn-ghost">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
