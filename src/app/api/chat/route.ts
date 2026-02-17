@@ -12,7 +12,7 @@ import {
   recordRequest,
   recordWin,
 } from '@/lib/mongodb';
-import { MESSAGE_COST_LAMPORTS, TREASURY_WALLET, MAX_MESSAGE_LENGTH, MAX_CONVERSATION_LENGTH } from '@/lib/constants';
+import { MESSAGE_COST_LAMPORTS, TREASURY_WALLET, MAX_MESSAGE_LENGTH, MAX_CONVERSATION_LENGTH, isPrizeTransferEnabled } from '@/lib/constants';
 import type { ChatResponse, Message } from '@/types';
 
 // ============================================
@@ -219,7 +219,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ChatRespo
     let prizeTransaction: string | undefined;
     let prizeAmount: number | undefined;
 
-    if (prizeSent) {
+    if (prizeSent && isPrizeTransferEnabled()) {
       try {
         const prizeResult = await sendPrize(walletAddress);
         if (prizeResult.success && prizeResult.winnerTx) {

@@ -15,6 +15,11 @@ export const WINNER_PERCENTAGE = parseFloat(process.env.WINNER_PERCENTAGE || '0.
 
 export const DEV_PERCENTAGE = parseFloat(process.env.DEV_PERCENTAGE || '0.2');
 
+// Gate for executing prize transfers (env must be explicitly set for live payouts)
+export function isPrizeTransferEnabled(): boolean {
+  return process.env.PRIZE_TRANSFERS_ENABLED === 'true';
+}
+
 // ============================================
 // SECURITY CONSTANTS
 // ============================================
